@@ -26,6 +26,7 @@ const chapter = {
 };
 
 let process = {
+    "current" : null,
     "foundations": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 23],
     "moderate": [2, 3, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23],
     "advanced": [2, 3, 5, 6, 7, 8, 9, 11, 12, 13, 16, 17, 18, 20, 21, 23],
@@ -34,6 +35,8 @@ let process = {
 
 if (localStorage.hasOwnProperty('process')) {
     process = JSON.parse(localStorage.getItem('process'))
+    number.innerText = process.current;
+    title.innerText = chapter[process.current];
 } else {
     localStorage.setItem('process', JSON.stringify(process));
 }
@@ -50,6 +53,8 @@ function getRandom() {
     } else if (obj.previous.length > 0) {
         item = obj.previous[Math.floor(Math.random() * obj.previous.length)];
     }
+    process.current = item;
+    localStorage.setItem('process', JSON.stringify(process));
     number.innerText = item;
     title.innerText = chapter[item];
     console.log(process)
@@ -63,26 +68,24 @@ function complete() {
         if (index > -1) {
             process.foundations.splice(index, 1);
         }
-        localStorage.setItem('process', JSON.stringify(process));
     } else if (obj.moderate.length > 0) {
         const index = process.moderate.indexOf(idx);
         if (index > -1) {
             process.moderate.splice(index, 1);
         }
-        localStorage.setItem('process', JSON.stringify(process));
     } else if (obj.advanced.length > 0) {
         const index = process.advanced.indexOf(idx);
         if (index > -1) {
             process.advanced.splice(index, 1);
         }
-        localStorage.setItem('process', JSON.stringify(process));
     } else if (obj.previous.length > 0) {
         const index = process.previous.indexOf(idx);
         if (index > -1) {
             process.previous.splice(index, 1);
         }
-        localStorage.setItem('process', JSON.stringify(process));
     }
+    process.current = item;
+    localStorage.setItem('process', JSON.stringify(process));
     console.log(process)
     number.innerText = '';
     title.innerText = '';
